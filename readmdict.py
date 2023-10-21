@@ -675,15 +675,13 @@ if __name__ == '__main__':
     if args.extract:
         # write out glos
         if mdx:
-            output_fname = ''.join([base, os.path.extsep, 'txt'])
-            tf = open(output_fname, 'wb')
+            output_fname = ''.join([base, os.path.extsep, 'json'])
+            tf = open(output_fname, 'wt')
+            result = {}
             for key, value in mdx.items():
-                tf.write(key)
-                tf.write(b'\r\n')
-                tf.write(value)
-                if not value.endswith(b'\n'):
-                    tf.write(b'\r\n')
-                tf.write(b'</>\r\n')
+                result[key.decode("utf-8")] = value.decode("utf-8")
+            import json
+            json.dump(result, tf)
             tf.close()
             # write out style
             if mdx.header.get('StyleSheet'):
